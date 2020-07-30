@@ -1,0 +1,54 @@
+import asyncio
+import time
+
+async def main():
+    print("This is main task")
+    await asyncio.gather(
+        main1(),
+        main2(),
+        main3()
+    )
+    print("main task is completed")
+
+async def main2(): 
+    print("This is second task")
+    await asyncio.sleep(10)
+    print("1st task is completed")
+
+
+async def main3(): 
+    print("This is 3rd task")
+    await asyncio.sleep(8)
+    print("2nd task is completed")
+
+
+async def main1(): 
+    print("This is 1st task")
+    await asyncio.sleep(5)
+    print("3rd task is completed")
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())
+# loop.run_until_complete(main2())
+# loop.run_until_complete(main3())
+# loop.run_until_complete(main4())
+# loop.close()
+start1 = time.perf_counter()
+asyncio.run(main())
+end1 = time.perf_counter()
+print("Total Execution time", start1-end1)
+# asyncio.run(main2())
+
+# Trying same asynic IO with create_Task method to check if this is really required.
+async def trymain():
+    print("This is main task")
+    task1=asyncio.create_task(main1())
+    task2= asyncio.create_task(main2())
+    task3= asyncio.create_task(main3())
+    await asyncio.gather(task1,task2,task3)
+    print("main task is completed")
+
+start1 = time.perf_counter()
+asyncio.run(trymain())
+end1 = time.perf_counter()
+print("Total Execution time", start1-end1)
